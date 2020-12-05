@@ -1,4 +1,5 @@
 lfortune==0.1.*
 flask
+flask-cors
 flask-restx
 uwsgi

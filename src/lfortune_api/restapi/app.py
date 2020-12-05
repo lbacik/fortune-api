@@ -1,6 +1,8 @@
-import lfortune_api.restapi.logging_config
+import os
+
 from typing import List, Optional, Dict
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from flask_restx import Api, Resource, fields
 from lfortune.abstract.fortune_source import FortuneSource
 from lfortune.fortune.config import Config
@@ -9,12 +11,20 @@ from lfortune.fortune.factory import Factory
 from lfortune.cli.arguments import Arguments
 from .functions import show_fortunes
 
+VERSION = '0.2.2'
+
+ENVIRONMENT_VAR_CORS = 'CORS'
 SOURCE_LIST_KEY = 'sources'
 SOURCE_PATH_KEY = 'path'
 SOURCE_PROBABILITY_KEY = 'probability'
 
 app = Flask(__name__)
-api = Api(app=app, version="0.2.1")
+
+if ENVIRONMENT_VAR_CORS in os.environ and os.environ.get(ENVIRONMENT_VAR_CORS) == 'yes':
+    CORS(app)
+    app.logger.info('*** CORS has been set up!')
+
+api = Api(app=app, version=VERSION)
 name_space = api.namespace('fortune', description='Fortune API')
 
 source_model = api.model('Source', {
