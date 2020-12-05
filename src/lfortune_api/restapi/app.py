@@ -1,6 +1,7 @@
 import lfortune_api.restapi.logging_config
 from typing import List, Optional, Dict
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from flask_restx import Api, Resource, fields
 from lfortune.abstract.fortune_source import FortuneSource
 from lfortune.fortune.config import Config
@@ -14,6 +15,7 @@ SOURCE_PATH_KEY = 'path'
 SOURCE_PROBABILITY_KEY = 'probability'
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app=app, version="0.2.1")
 name_space = api.namespace('fortune', description='Fortune API')
 

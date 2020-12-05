@@ -1,4 +1,5 @@
 lfortune
 flask
+flask-cors
 flask-restx
 uwsgi
