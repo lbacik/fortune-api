@@ -1,4 +1,4 @@
-from os import makedirs, path, listdir
+from os import path, listdir
 from typing import List
 
 from lfortune.fortune.config_values import ConfigValues
@@ -44,5 +44,8 @@ def show_fortunes(config: ConfigValues, db: List) -> List:
         data = indexer.index(fortune_path)
         for f in data.indices:
             result.append(read_fortune(fortune_path, f))
+
+    else:
+        raise ValueError('the path is not a dir or a file')
 
     return result

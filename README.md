@@ -13,7 +13,7 @@ https://hub.docker.com/repository/docker/lbacik/fortune-api - just run:
 
 And you can start the fun:
 
-    ➜  ~ http localhost:8080
+    ➜  ~ http localhost:8080/fortune
     HTTP/1.1 200 OK
     Content-Length: 93
     Content-Type: application/json
@@ -26,18 +26,42 @@ And you can start the fun:
 
 Only GET requests are accepted for the time being. And there are two types of available requests possible:
 
-    GET http://HOST/<path>
+    GET http://localhost:8080/fortune/<path>
     
 Where the `<path>` part is optional - to random one fortune form pointed directory/file.
 
-    GET http://HOST/<path>?explore
+    GET http://localhost:8080/fortune/<path>?explore
     
 Where the `<path>` part is optional (again :)) - to show the files in `path` or the fortunes in the file (if the 
 `path` points to the file).
 
+It is also possible to pass more than one source (as a source list, with probability) by POST request:
+
+    POST http://localhost:8080/fortune
+    Content-Type: application/json    
+    
+    {
+      "sources": [
+        {
+          "path": "<path>>",
+          "probability": <int>
+        },
+        {
+          "path": "<path>",
+          "probability": <int>
+        },
+        
+        ...
+
+      ]
+    }
+
+The `probability` can be 0 (it is the default in cli interface - it means that it will be calculated later by "equal divide" 
+between all the sources with probability set to 0).
+
 ## Example
 
-    ➜  ~ http 'localhost:8080?explore'
+    ➜  ~ http 'localhost:8080/fortune?explore'
     HTTP/1.1 200 OK
     Content-Length: 435
     Content-Type: application/json
@@ -88,7 +112,7 @@ Where the `<path>` part is optional (again :)) - to show the files in `path` or 
         "paradoxum"
     ]
 
-    ➜  ~ http 'localhost:8080/literature'
+    ➜  ~ http 'localhost:8080/fortune/literature'
     HTTP/1.1 200 OK
     Content-Length: 77
     Content-Type: application/json
