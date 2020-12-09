@@ -14,7 +14,7 @@ SOURCE_PATH_KEY = 'path'
 SOURCE_PROBABILITY_KEY = 'probability'
 
 app = Flask(__name__)
-api = Api(app=app, version="0.1")
+api = Api(app=app, version="0.2.1")
 name_space = api.namespace('fortune', description='Fortune API')
 
 source_model = api.model('Source', {
