@@ -14,7 +14,7 @@ SOURCE_PATH_KEY = 'path'
 SOURCE_PROBABILITY_KEY = 'probability'
 
 app = Flask(__name__)
-api = Api(app=app, version="0.1")
+api = Api(app=app, version="0.2.1")
 name_space = api.namespace('fortune', description='Fortune API')
 
 source_model = api.model('Source', {
@@ -35,7 +35,12 @@ app.logger.info('ROOT PATH: %s', config_values.root_path)
 def source_list_parser(value: Dict) -> Optional[List[FortuneSource]]:
     sources = []
     for sourceDict in value[SOURCE_LIST_KEY]:
-        sources.append(FortuneSource(sourceDict[SOURCE_PATH_KEY], sourceDict[SOURCE_PROBABILITY_KEY]))
+        sources.append(
+            FortuneSource(
+                f'{config_values.root_path}/{sourceDict[SOURCE_PATH_KEY]}',
+                sourceDict[SOURCE_PROBABILITY_KEY]
+            )
+        )
     return sources
 
 
@@ -54,7 +59,7 @@ class FortuneApi(Resource):
         if explore is False:
             sources = None
             if path:
-                sources = [FortuneSource(path)]
+                sources = [FortuneSource(f'{config_values.root_path}/{path}')]
             return get_fortune(sources)
         else:
             try:
