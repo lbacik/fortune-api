@@ -1,4 +1,4 @@
-lfortune
+lfortune==0.1.*
 flask
 flask-restx
 uwsgi
