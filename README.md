@@ -13,7 +13,7 @@ https://hub.docker.com/repository/docker/lbacik/fortune-api - just run:
 
 And you can start the fun:
 
-    ➜  ~ http localhost:8080/fortune
+    ➜  ~ http localhost:8080/fortune/
     HTTP/1.1 200 OK
     Content-Length: 93
     Content-Type: application/json
@@ -22,6 +22,16 @@ And you can start the fun:
         "fortune": "Rotten wood cannot be carved.\n\t\t-- Confucius, \"Analects\", Book 5, Ch. 9\n"
     }
         
+### CORS
+
+To add the "Access-Control-Allow-Origin: *" header to the response please set the CORS environment variable to "yes". 
+
+    ➜  ~ docker run --rm -d -p 8080:8080 -e CORS=yes lbacik/fortune-api
+    ➜  ~ http localhost:8080/fortune/
+    HTTP/1.1 200 OK
+    Access-Control-Allow-Origin: *
+    ...
+
 ## API
 
 Only GET requests are accepted for the time being. And there are two types of available requests possible:
