@@ -1,4 +1,4 @@
-lfortune==0.1.*
+lfortune
 flask
 flask-cors
 flask-restx
