@@ -11,7 +11,7 @@ from lfortune.fortune.factory import Factory
 from lfortune.cli.arguments import Arguments
 from .functions import show_fortunes
 
-VERSION = '0.2.2'
+VERSION = '0.3'
 
 ENVIRONMENT_VAR_CORS = 'CORS'
 SOURCE_LIST_KEY = 'sources'
@@ -47,7 +47,7 @@ def source_list_parser(value: Dict) -> Optional[List[FortuneSource]]:
     for sourceDict in value[SOURCE_LIST_KEY]:
         sources.append(
             FortuneSource(
-                f'{config_values.root_path}/{sourceDict[SOURCE_PATH_KEY]}',
+                sourceDict[SOURCE_PATH_KEY],
                 sourceDict[SOURCE_PROBABILITY_KEY]
             )
         )
@@ -55,8 +55,12 @@ def source_list_parser(value: Dict) -> Optional[List[FortuneSource]]:
 
 
 def get_fortune(sources: Optional[List[FortuneSource]]) -> str:
-    fortune_str = fortune.get(sources)
-    return jsonify({'fortune': fortune_str})
+    fortune_data = fortune.get(sources)
+    return jsonify({
+        'fortune': fortune_data.fortune,
+        'file': fortune_data.file,
+        'index': fortune_data.index,
+    })
 
 
 @name_space.route("/<path:path>")
@@ -69,7 +73,7 @@ class FortuneApi(Resource):
         if explore is False:
             sources = None
             if path:
-                sources = [FortuneSource(f'{config_values.root_path}/{path}')]
+                sources = [FortuneSource(path)]
             return get_fortune(sources)
         else:
             try:
