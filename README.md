@@ -2,12 +2,11 @@
 
 ![Python application](https://github.com/lbacik/fortune-api/workflows/Python%20application/badge.svg)
 
-This is simple REST API for fortune app: https://github.com/lbacik/fortune
+A simple REST API for fortune app: https://github.com/lbacik/fortune
 
 ## Usage
 
-Probably the best way to check/use this app - is to utilize the docker image from
-https://hub.docker.com/repository/docker/lbacik/fortune-api - just run:
+E.g. by utilizing the docker image from https://hub.docker.com/r/lbacik/fortune-api - just run:
 
     docker run --rm -p 127.0.0.1:8080:8080 lbacik/fortune-api
 
@@ -24,7 +23,7 @@ And you can start the fun:
         
 ### CORS
 
-To add the "Access-Control-Allow-Origin: *" header to the response please set the CORS environment variable to "yes". 
+To add the "Access-Control-Allow-Origin: *" header to the response set the CORS environment variable to "yes". 
 
     ➜  ~ docker run --rm -d -p 8080:8080 -e CORS=yes lbacik/fortune-api
     ➜  ~ http localhost:8080/fortune/
@@ -34,7 +33,7 @@ To add the "Access-Control-Allow-Origin: *" header to the response please set th
 
 ## API
 
-Only GET requests are accepted for the time being. And there are two types of available requests possible:
+GET requests:
 
     GET http://localhost:8080/fortune/<path>
     
@@ -42,8 +41,8 @@ Where the `<path>` part is optional - to random one fortune form pointed directo
 
     GET http://localhost:8080/fortune/<path>?explore
     
-Where the `<path>` part is optional (again :)) - to show the files in `path` or the fortunes in the file (if the 
-`path` points to the file).
+Where the `<path>` part is optional (again :)) - it shows the files in `path` (relative to the fortune's `root` path) 
+or the fortunes in the file (if the `path` points to the file).
 
 It is also possible to pass more than one source (as a source list, with probability) by POST request:
 
@@ -69,7 +68,7 @@ It is also possible to pass more than one source (as a source list, with probabi
 The `probability` can be 0 (it is the default in cli interface - it means that it will be calculated later by "equal divide" 
 between all the sources with probability set to 0).
 
-## Example
+## Examples
 
     ➜  ~ http 'localhost:8080/fortune?explore'
     HTTP/1.1 200 OK
