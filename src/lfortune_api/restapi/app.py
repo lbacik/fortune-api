@@ -11,7 +11,7 @@ from lfortune.fortune.factory import Factory
 from lfortune.cli.arguments import Arguments
 from .functions import show_fortunes
 
-VERSION = '0.3'
+VERSION = '0.4'
 
 ENVIRONMENT_VAR_CORS = 'CORS'
 SOURCE_LIST_KEY = 'sources'
@@ -54,8 +54,8 @@ def source_list_parser(value: Dict) -> Optional[List[FortuneSource]]:
     return sources
 
 
-def get_fortune(sources: Optional[List[FortuneSource]]) -> str:
-    fortune_data = fortune.get(sources)
+def get_fortune(sources: Optional[List[FortuneSource]], index: Optional[int] = None) -> str:
+    fortune_data = fortune.get(sources, index)
     return jsonify({
         'fortune': fortune_data.fortune,
         'file': fortune_data.file,
@@ -67,14 +67,14 @@ def get_fortune(sources: Optional[List[FortuneSource]]) -> str:
 @name_space.param('explore', 'list the directory content or all fortunes from the file (if path indicates file)')
 class FortuneApi(Resource):
     @staticmethod
-    def get(path: str = '') -> str:
+    def get(path: str = '', index: Optional[int] = None) -> str:
         explore: bool = request.args.get('explore', False)
         app.logger.debug('explore: %s, path: %s', explore, path)
         if explore is False:
             sources = None
             if path:
                 sources = [FortuneSource(path)]
-            return get_fortune(sources)
+            return get_fortune(sources, index)
         else:
             try:
                 result = show_fortunes(config_values, [path])
@@ -99,3 +99,10 @@ class FortuneApiPost(Resource):
         app.logger.debug(api.payload)
         sources = source_list_parser(api.payload)
         return get_fortune(sources)
+
+
+@name_space.route("/<path:path>/<int:index>")
+class FortuneApiGetByIndex(Resource):
+    @staticmethod
+    def get(path: str, index: int) -> str:
+        return FortuneApi.get(path, index)
