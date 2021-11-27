@@ -1,7 +1,7 @@
 FROM python:3.9
 
 ENV FORTUNES=/usr/share/games/fortunes
-ENV CORS=no
+ENV CORS=yes
 
 RUN apt-get -y update && apt-get -y install \
     fortune\
