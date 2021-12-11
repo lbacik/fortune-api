@@ -11,7 +11,7 @@ from lfortune.fortune.factory import Factory
 from lfortune.cli.arguments import Arguments
 from .functions import show_fortunes
 
-VERSION = '0.4'
+VERSION = '0.4.2'
 
 ENVIRONMENT_VAR_CORS = 'CORS'
 SOURCE_LIST_KEY = 'sources'
