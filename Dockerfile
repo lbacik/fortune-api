@@ -1,8 +1,6 @@
-FROM python:3.9
+FROM debian:11 as base
 
-ENV FORTUNES=/usr/share/games/fortunes
-ENV CORS=yes
-
+# hadolint ignore=DL3008,DL3015
 RUN apt-get -y update && apt-get -y install \
     fortunes \
     fortunes-off \
@@ -24,11 +22,20 @@ RUN apt-get -y update && apt-get -y install \
     fortunes-ru \
     fortunes-zh
 
+FROM python:3.9
+
+ENV FORTUNES=/usr/share/games/fortunes
+ENV CORS=yes
+
+COPY --from=base /usr/share/games/fortunes /usr/share/games/fortunes
+
 COPY . /opt/project
 WORKDIR /opt/project
 
+# hadolint ignore=DL3042
 RUN pip install -r requirements.txt
 
 EXPOSE 8080
 
-CMD uwsgi --ini config.ini
+CMD ["uwsgi", "--ini", "config.ini"]
+
