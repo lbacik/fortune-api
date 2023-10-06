@@ -1,4 +1,4 @@
-FROM debian:11 as base
+FROM debian:10 as base
 
 # hadolint ignore=DL3008,DL3015
 RUN apt-get -y update && apt-get -y install \
@@ -20,7 +20,10 @@ RUN apt-get -y update && apt-get -y install \
     fortunes-mario \
     fortunes-pl \
     fortunes-ru \
-    fortunes-zh
+    fortunes-zh \
+    fortune-mod \
+    fortunes-eo \
+    fortunes-min
 
 FROM python:3.11
 
