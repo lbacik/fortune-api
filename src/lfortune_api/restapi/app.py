@@ -1,6 +1,7 @@
 from typing import Optional, List
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from lfortune.abstract.fortune_source import FortuneSource
 from pydantic import BaseModel
 
@@ -22,6 +23,13 @@ class InputFortunesSources(BaseModel):
 api = FastAPI(
     title="Fortune API",
     version=VERSION,
+)
+
+api.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

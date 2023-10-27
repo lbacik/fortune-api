@@ -25,7 +25,6 @@ RUN apt-get -y update && apt-get -y install \
 FROM python:3.11
 
 ENV FORTUNES=/usr/share/games/fortunes
-ENV CORS=yes
 
 COPY --from=base /usr/share/games/fortunes /usr/share/games/fortunes
 COPY . /opt/project
