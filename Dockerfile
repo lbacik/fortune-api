@@ -22,20 +22,24 @@ RUN apt-get -y update && apt-get -y install \
     fortunes-ru \
     fortunes-zh
 
-FROM python:3.9
+FROM python:3.11
 
 ENV FORTUNES=/usr/share/games/fortunes
 ENV CORS=yes
 
 COPY --from=base /usr/share/games/fortunes /usr/share/games/fortunes
-
 COPY . /opt/project
 WORKDIR /opt/project
 
-# hadolint ignore=DL3042
-RUN pip install -r requirements.txt
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+RUN curl -sSL https://install.python-poetry.org | python3 - \
+    && ~/.local/bin/poetry config virtualenvs.create false  \
+    && ~/.local/bin/poetry install --no-dev --no-root --no-interaction --no-ansi
 
 EXPOSE 8080
 
-CMD ["uwsgi", "--ini", "config.ini"]
+ENV PYTHONPATH='./src'
+
+CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8080", "lfortune_api.restapi.app:api"]
 
