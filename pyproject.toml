@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "fortune-api"
+version = "0.5"
+description = ""
+authors = ["Łukasz Bacik <mail@luka.sh>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+lfortune = "^0.3.2"
+uvicorn = "^0.23.2"
+fastapi = "^0.104.0"
+logging = "^0.4.9.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
